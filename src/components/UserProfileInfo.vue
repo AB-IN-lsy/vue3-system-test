@@ -2,7 +2,7 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-03-01 11:12:18
  * @FilePath: \vue3-system-test\src\components\UserProfileInfo.vue
- * @LastEditTime: 2023-03-01 20:12:07
+ * @LastEditTime: 2023-03-01 21:15:08
 -->
 <template>
     <div class="card">
@@ -12,8 +12,8 @@
                     <img class="img-fluid rounded mx-auto d-block" src="https://oss.ab-in.cn/images/AB-IN.jpg" alt="">
                 </div>
                 <div class="col-8">
-                    <div class="card-info userName">{{ fullName }}</div>
-                    <div class="card-info fans ">{{ user.userName }}</div>
+                    <div class="card-info userName">{{ user.userName }}</div>
+                    <div class="card-info fans ">{{ fullName }}</div>
                     <div class="card-info fans ">粉丝: {{ user.followerCount }}</div>
                     <div class="card-info float-right">
                         <button @click="follow" v-if="!user.isFollowed" type="button"

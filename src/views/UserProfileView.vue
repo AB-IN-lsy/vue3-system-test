@@ -2,7 +2,7 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-03-01 10:48:37
  * @FilePath: \vue3-system-test\src\views\UserProfileView.vue
- * @LastEditTime: 2023-03-01 20:56:07
+ * @LastEditTime: 2023-03-02 19:04:15
 -->
 <template>
     <FrameWork>
@@ -12,7 +12,7 @@
                 <!-- @的为父组件绑定的函数 :为绑定属性 -->
                 <UserProfileInfo @unFollow="unFollow" @follow="follow" :user="user">
                 </UserProfileInfo>
-                <UserProfileWriteSpace  @submit="submit">
+                <UserProfileWriteSpace @submit="submit">
                 </UserProfileWriteSpace>
             </div>
             <div class="col-9">
@@ -30,7 +30,7 @@ import UserProfileInfo from '@/components/UserProfileInfo.vue';
 import UserProfilePosts from '@/components/UserProfilePosts.vue';
 import UserProfileWriteSpace from '@/components/UserProfileWriteSpace.vue';
 import { reactive } from 'vue';
-
+import { useRoute } from 'vue-router';
 
 export default {
     name: 'UserProfileView',
@@ -39,6 +39,12 @@ export default {
     },
     // setup：初始化定义函数和变量
     setup() {
+
+        // 点击到这的链接时，传了params，在路由中的URL设置对应的变量，在这里通过useRoute获取
+        const route = useRoute();
+        const userId = route.params.userId;
+        console.log(userId);
+
         const user = reactive({
             id: 1,
             userName: "AB-IN",

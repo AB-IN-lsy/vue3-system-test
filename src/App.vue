@@ -2,7 +2,7 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-02-28 18:04:33
  * @FilePath: \vue3-system-test\src\App.vue
- * @LastEditTime: 2023-02-28 21:47:59
+ * @LastEditTime: 2023-03-02 19:16:17
 -->
 <template>
   <nav-bar></nav-bar>
@@ -29,7 +29,7 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
 }
 

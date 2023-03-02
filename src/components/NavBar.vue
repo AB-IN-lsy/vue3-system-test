@@ -2,7 +2,7 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-02-28 21:12:41
  * @FilePath: \vue3-system-test\src\components\NavBar.vue
- * @LastEditTime: 2023-03-01 19:32:35
+ * @LastEditTime: 2023-03-02 21:31:07
 -->
 <template>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -21,15 +21,26 @@
                         <RouterLink class="nav-link" :to="{ name: 'userlist' }">好友列表</RouterLink>
                     </li>
                     <li class="nav-item">
-                        <RouterLink class="nav-link" :to="{ name: 'userprofile' }">用户动态</RouterLink>
+                        <RouterLink class="nav-link" :to="{ name: 'userprofile', params: { userId: 2 } }">用户动态</RouterLink>
                     </li>
                 </ul>
-                <ul class="navbar-nav ">
+                <ul class="navbar-nav " v-if="!$store.state.user.is_login">
                     <li class="nav-item">
                         <RouterLink class="nav-link" :to="{ name: 'login' }">登录</RouterLink>
                     </li>
                     <li class="nav-item">
                         <RouterLink class="nav-link" :to="{ name: 'register' }">注册</RouterLink>
+                    </li>
+                </ul>
+                <ul class="navbar-nav " v-else>
+                    <li class="nav-item">
+                        <RouterLink class="nav-link"
+                            :to="{ name: 'userprofile', params: { userId: $store.state.user.id } }">
+                            {{ $store.state.user.username }}
+                        </RouterLink>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="cursor: pointer;" @click="logout">退出</a>
                     </li>
                 </ul>
             </div>
@@ -38,8 +49,20 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
+
 export default {
-    name: "NavBar"
+    name: "NavBar",
+    setup() {
+        const store = useStore();
+        const logout = () => {
+            store.commit('logout');
+        };
+
+        return {
+            logout,
+        }
+    }
 
 }
 
