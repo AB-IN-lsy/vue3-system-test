@@ -2,7 +2,7 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-03-02 20:42:42
  * @FilePath: \vue3-system-test\src\store\user.js
- * @LastEditTime: 2023-03-02 22:22:05
+ * @LastEditTime: 2023-03-03 12:42:10
  */
 import $ from 'jquery';
 import jwt_decode from 'jwt-decode';
@@ -35,6 +35,7 @@ const ModuleUser = {
         },
         updateAccess(state, access) {
             state.access = access;
+            localStorage.setItem('access', access);
         },
         //退出的话，就是将state清空即可
         logout(state) {
@@ -45,6 +46,7 @@ const ModuleUser = {
             state.access = "";
             state.refresh = "";
             state.is_login = false;
+            localStorage.clear();
         }
     },
     // 支持异步操作 （访问链接）
@@ -64,7 +66,7 @@ const ModuleUser = {
                     // 如果成功了，那么就是获取到了jwt
                     const { access, refresh } = resp; // 获取access和refresh
                     const access_obj = jwt_decode(access); // jwt解码
-
+                    localStorage.setItem('access', access);
                     // 每隔4.5分钟刷新一次access
                     setInterval(() => {
                         $.ajax({
@@ -76,6 +78,7 @@ const ModuleUser = {
                             success(resp) {
                                 // 调用mutation的API
                                 context.commit('updateAccess', resp.access);
+                                // console.log(resp.access);
                             }
                         });
                     }, 4.5 * 60 * 1000);

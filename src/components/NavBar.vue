@@ -2,7 +2,7 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-02-28 21:12:41
  * @FilePath: \vue3-system-test\src\components\NavBar.vue
- * @LastEditTime: 2023-03-02 21:31:07
+ * @LastEditTime: 2023-03-03 13:28:55
 -->
 <template>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -20,11 +20,8 @@
                     <li class="nav-item">
                         <RouterLink class="nav-link" :to="{ name: 'userlist' }">好友列表</RouterLink>
                     </li>
-                    <li class="nav-item">
-                        <RouterLink class="nav-link" :to="{ name: 'userprofile', params: { userId: 2 } }">用户动态</RouterLink>
-                    </li>
                 </ul>
-                <ul class="navbar-nav " v-if="!$store.state.user.is_login">
+                <ul class="navbar-nav " v-if="!is_login">
                     <li class="nav-item">
                         <RouterLink class="nav-link" :to="{ name: 'login' }">登录</RouterLink>
                     </li>
@@ -49,16 +46,34 @@
 </template>
 
 <script>
+import { getAccess } from '@/assets/js';
 import { useStore } from 'vuex';
+import { computed } from 'vue';
 
 export default {
     name: "NavBar",
+    // 退出的话，就需要修改用户的登录状态，就需要和store打交道
+
+    mounted() {
+        const is_login = computed(function () {
+            const access = getAccess();
+            if (access != '')
+                return true;
+            else return false;
+        })
+
+        return {
+            is_login
+        }
+    },
+
     setup() {
         const store = useStore();
+
+
         const logout = () => {
             store.commit('logout');
         };
-
         return {
             logout,
         }

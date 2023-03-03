@@ -2,11 +2,14 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-02-28 18:04:33
  * @FilePath: \vue3-system-test\src\App.vue
- * @LastEditTime: 2023-03-02 19:16:17
+ * @LastEditTime: 2023-03-03 09:38:29
 -->
 <template>
   <nav-bar></nav-bar>
-  <router-view></router-view>
+  <!-- key意义在于用完整路径判重，这样就会带上后面的id，比如http://localhost:8080/userprofile/65/ -->
+  <router-view :key="$route.fullPath">
+
+  </router-view>
 </template>
 
 

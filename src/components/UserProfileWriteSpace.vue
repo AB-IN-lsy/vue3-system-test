@@ -1,3 +1,9 @@
+<!--
+ * @Author: NEFU AB-IN
+ * @Date: 2023-03-01 11:13:16
+ * @FilePath: \vue3-system-test\src\components\UserProfileWriteSpace.vue
+ * @LastEditTime: 2023-03-03 10:00:24
+-->
 <template>
     <div class="card mg-top-1">
         <div class="card-body">
@@ -16,17 +22,36 @@
 
 <script>
 import { ref } from 'vue';
+import $ from 'jquery'
+import { useStore } from 'vuex';
+
 
 export default {
     name: "UserProfileWriteSpace",
     setup(props, context) {
         // ref定义一个变量，若获取变量需用.value
         let content = ref('');
-
+        const store = useStore();
         const submit = function () {
             if (!content.value) return;
-            context.emit('submit', content.value);
-            content.value = "";
+            $.ajax({
+                url: "https://app165.acapp.acwing.com.cn/myspace/post/",
+                type: "POST",
+                data: {
+                    content: content.value,
+                },
+                headers: {
+                    'Authorization': "Bearer " + store.state.user.access,
+                },
+                success(resp) {
+                    // resp 先包含是否添加成功
+                    if (resp.result === "success") {
+                        context.emit('submit', content.value);
+                        content.value = "";
+                    }
+                }
+            });
+
         }
         return {
             content, submit

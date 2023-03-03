@@ -2,14 +2,15 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-02-28 23:12:01
  * @FilePath: \vue3-system-test\src\views\UserListView.vue
- * @LastEditTime: 2023-03-02 15:41:52
+ * @LastEditTime: 2023-03-03 09:20:52
 -->
 <template>
     <FrameWork>
-        <div class="card mg-bot-1" v-for="user in users" :key="user.id">
+        <!-- 用()传触发事件的参数 -->
+        <div class="card mg-bot-1" v-for="user in users" :key="user.id" @click="open_user_profile(user.id)">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-1">
+                    <div class="col-1 img-col-center">
                         <img :src="user.photo" alt="" class="img-fluid rounded mx-auto d-block">
                     </div>
                     <div class="col-11">
@@ -26,8 +27,10 @@
 
 import FrameWork from '@/components/FrameWork.vue';
 import $ from 'jquery'
-import { ref } from 'vue';
 // 采用Ajax进行数据交互
+import { ref } from 'vue';
+import router from '@/router';
+import { useStore } from 'vuex';
 
 export default {
     name: 'UserListView',
@@ -35,6 +38,7 @@ export default {
         FrameWork
     },
     setup() {
+        const store = useStore();
         let users = ref([]);
 
         $.ajax({
@@ -44,8 +48,25 @@ export default {
                 users.value = resp;
             }
         })
+
+        const open_user_profile = function (userId) {
+            if (store.state.user.is_login) {
+                router.push({
+                    name: "userprofile",
+                    params: {
+                        userId
+                    }
+                })
+            }
+            else {
+                router.push({
+                    name: "login",
+                })
+            }
+        };
+
         return {
-            users,
+            users, open_user_profile
         }
     }
 
@@ -67,13 +88,12 @@ export default {
     height: 50%;
 }
 
-.card{
+.card {
     cursor: pointer;
 }
 
-.card:hover{
+.card:hover {
     box-shadow: 2px 2px 10px lightgrey;
     transition: 500ms;
 }
-
 </style>

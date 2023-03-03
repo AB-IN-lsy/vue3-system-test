@@ -2,18 +2,18 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-03-01 11:12:18
  * @FilePath: \vue3-system-test\src\components\UserProfileInfo.vue
- * @LastEditTime: 2023-03-01 21:15:08
+ * @LastEditTime: 2023-03-03 09:19:56
 -->
 <template>
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-4">
-                    <img class="img-fluid rounded mx-auto d-block" src="https://oss.ab-in.cn/images/AB-IN.jpg" alt="">
+                <div class="col-4 img-col-center">
+                    <img class="img-fluid rounded mx-auto d-block" :src="user.photo" alt="">
                 </div>
                 <div class="col-8">
-                    <div class="card-info userName">{{ user.userName }}</div>
-                    <div class="card-info fans ">{{ fullName }}</div>
+                    <div class="card-info username">{{ user.username }}</div>
+                    <!-- <div class="card-info fans ">{{ fullName }}</div> -->
                     <div class="card-info fans ">粉丝: {{ user.followerCount }}</div>
                     <div class="card-info float-right">
                         <button @click="follow" v-if="!user.isFollowed" type="button"
@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import { computed } from 'vue';
 
 export default {
     name: "UserProfileInfo",
@@ -47,11 +46,11 @@ export default {
         }
     },
     setup(props, context) {
-        let fullName = computed(
-            function () {
-                return props.user.firstName + " " + props.user.lastName;
-            }
-        )
+        // let fullName = computed(
+        //     function () {
+        //         return props.user.firstName + " " + props.user.lastName;
+        //     }
+        // )
         // context 中包含许多API，其中emit可以触发父组件绑定的@事件
         const follow = function () {
             context.emit('follow');
@@ -61,7 +60,7 @@ export default {
         }
 
         return {
-            fullName, follow, unFollow,
+            follow, unFollow,
         }
     }
 
@@ -76,7 +75,7 @@ export default {
     font-size: 0.5rem;
 }
 
-.userName {
+.username {
     font-weight: bold;
     font-size: 1rem;
 }
