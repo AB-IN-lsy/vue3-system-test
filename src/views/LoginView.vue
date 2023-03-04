@@ -2,9 +2,10 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-03-01 10:46:13
  * @FilePath: \vue3-system-test\src\views\LoginView.vue
- * @LastEditTime: 2023-03-02 21:49:16
+ * @LastEditTime: 2023-03-04 09:52:36
 -->
 <template>
+    <NavBar></NavBar>
     <FrameWork>
         <form @submit.prevent="login">
             <div class="mb-3">
@@ -27,12 +28,14 @@ import FrameWork from '@/components/FrameWork.vue';
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 import router from '@/router/index';
+import NavBar from '@/components/NavBar.vue';
 
 
 export default {
     name: 'LoginView',
     components: {
-        FrameWork
+        FrameWork,
+        NavBar,
     },
     setup() {
         const store = useStore();

@@ -5,6 +5,7 @@
  * @LastEditTime: 2023-03-02 16:41:56
 -->
 <template>
+    <NavBar></NavBar>
     <FrameWork>
         <div id="root">
             <div class="box-404-wrap">
@@ -28,11 +29,12 @@
 
 <script>
 import FrameWork from '@/components/FrameWork.vue';
+import NavBar from '@/components/NavBar.vue';
 
 
 export default {
     name: "NotFoundView",
-    components: { FrameWork }
+    components: { FrameWork, NavBar }
 }
 </script>
 

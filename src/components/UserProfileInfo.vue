@@ -2,7 +2,7 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-03-01 11:12:18
  * @FilePath: \vue3-system-test\src\components\UserProfileInfo.vue
- * @LastEditTime: 2023-03-03 09:19:56
+ * @LastEditTime: 2023-03-04 15:34:50
 -->
 <template>
     <div class="card">
@@ -16,11 +16,11 @@
                     <!-- <div class="card-info fans ">{{ fullName }}</div> -->
                     <div class="card-info fans ">粉丝: {{ user.followerCount }}</div>
                     <div class="card-info float-right">
-                        <button @click="follow" v-if="!user.isFollowed" type="button"
+                        <button @click="follow" v-if="!user.is_followed" type="button"
                             class="btn btn-secondary btn-sm card-info">
                             +关注
                         </button>
-                        <button @click="unFollow" v-if="user.isFollowed" type="button"
+                        <button @click="unFollow" v-if="user.is_followed" type="button"
                             class="btn btn-success btn-sm card-info">
                             已关注
                         </button>
@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import $ from 'jquery'
+import { useStore } from 'vuex'
 
 export default {
     name: "UserProfileInfo",
@@ -46,6 +48,8 @@ export default {
         }
     },
     setup(props, context) {
+        console.log(props.user);
+        const store = useStore()
         // let fullName = computed(
         //     function () {
         //         return props.user.firstName + " " + props.user.lastName;
@@ -53,10 +57,44 @@ export default {
         // )
         // context 中包含许多API，其中emit可以触发父组件绑定的@事件
         const follow = function () {
-            context.emit('follow');
+            $.ajax({
+                url: "https://app165.acapp.acwing.com.cn/myspace/follow/",
+                type: "POST",
+                data: {
+                    target_id: props.user.id,
+                },
+                headers: {
+                    // Authorization 授权
+                    // Authentication 身份确认
+                    'Authorization': "Bearer " + store.state.user.access,
+                },
+                success(resp) {
+                    if (resp.result === "success") {
+                        context.emit('follow');
+                    }
+
+                }
+            })
+
         }
         const unFollow = function () {
-            context.emit('unFollow');
+            $.ajax({
+                url: "https://app165.acapp.acwing.com.cn/myspace/follow/",
+                type: "POST",
+                data: {
+                    target_id: props.user.id,
+                },
+                headers: {
+                    // Authorization 授权
+                    // Authentication 身份确认
+                    'Authorization': "Bearer " + store.state.user.access,
+                },
+                success(resp) {
+                    if (resp.result === "success") {
+                        context.emit('unFollow');
+                    }
+                }
+            })
         }
 
         return {

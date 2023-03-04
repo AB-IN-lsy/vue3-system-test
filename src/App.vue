@@ -2,10 +2,9 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-02-28 18:04:33
  * @FilePath: \vue3-system-test\src\App.vue
- * @LastEditTime: 2023-03-03 09:38:29
+ * @LastEditTime: 2023-03-04 09:48:02
 -->
 <template>
-  <nav-bar></nav-bar>
   <!-- key意义在于用完整路径判重，这样就会带上后面的id，比如http://localhost:8080/userprofile/65/ -->
   <router-view :key="$route.fullPath">
 
@@ -17,13 +16,11 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap'
 
-import NavBar from './components/NavBar.vue'
 
 export default {
   name: 'App',
-  components: {
-    NavBar
-  }
+
+
 }
 </script>
 

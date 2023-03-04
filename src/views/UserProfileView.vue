@@ -2,9 +2,10 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-03-01 10:48:37
  * @FilePath: \vue3-system-test\src\views\UserProfileView.vue
- * @LastEditTime: 2023-03-03 12:58:11
+ * @LastEditTime: 2023-03-04 11:59:49
 -->
 <template>
+    <NavBar></NavBar>
     <FrameWork>
         <!-- div.row>(div.col-3+div.col-9) -->
         <div class="row">
@@ -12,11 +13,11 @@
                 <!-- @的为父组件绑定的函数 :为绑定属性 -->
                 <UserProfileInfo @unFollow="unFollow" @follow="follow" :user="user">
                 </UserProfileInfo>
-                <UserProfileWriteSpace @submit="submit" v-if="is_me">
+                <UserProfileWriteSpace @submitPost="submitPost" v-if="is_me">
                 </UserProfileWriteSpace>
             </div>
             <div class="col-9">
-                <UserProfilePosts :posts="posts">
+                <UserProfilePosts @deletePost="deletePost" :posts="posts" :user="user">
                 </UserProfilePosts>
             </div>
         </div>
@@ -35,11 +36,16 @@ import $ from 'jquery'
 import { useStore } from 'vuex';
 import { computed } from 'vue';
 import { getAccess } from '@/assets/js/index'
+import NavBar from '@/components/NavBar.vue';
 
 export default {
     name: 'UserProfileView',
     components: {
-        FrameWork, UserProfileInfo, UserProfilePosts, UserProfileWriteSpace
+        FrameWork,
+        UserProfileInfo,
+        UserProfilePosts,
+        UserProfileWriteSpace,
+        NavBar
     },
 
     // setup：初始化定义函数和变量
@@ -51,6 +57,7 @@ export default {
         const user = reactive({});
         const posts = reactive({})
 
+        // console.log(getAccess());
 
         // 获取用户信息
         $.ajax({
@@ -88,35 +95,43 @@ export default {
             }
         });
 
-        // 判断是否使自己，才展现编辑区
+        // 判断是否是自己，才展现编辑区
         const is_me = computed(function () {
             return userId === store.state.user.id;
         })
         // 父组件定义的触发函数（事件）
         const follow = function () {
-            if (user.isFollowed) return;
-            user.isFollowed = true;
+            if (user.is_followed) return;
+            // 若只在组件中修改了关注状态是不行的，因为最终状态的体现是要放在父组件这，所以这里的状态也要变
+            user.is_followed = true;
             user.followerCount++;
         }
 
         const unFollow = function () {
-            if (!user.isFollowed) return;
-            user.isFollowed = false;
+            if (!user.is_followed) return;
+            user.is_followed = false;
             user.followerCount--;
         }
 
-        const submit = function (content) {
+        const submitPost = function (content) {
             posts.count++;
             // 在最后面加:push, 在最前面加:unshift
             posts.posts.unshift({
                 id: posts.count,
-                userId: 1,
+                userId: userId,
                 content: content,
             })
         }
 
+
+        const deletePost = function (post_id) {
+            posts.posts = posts.posts.filter(post => post.id !== post_id);
+            posts.count = posts.posts.length;
+
+        };
+
         return {
-            user, follow, unFollow, posts, submit, is_me
+            user, follow, unFollow, posts, submitPost, is_me, deletePost
         }
 
     }

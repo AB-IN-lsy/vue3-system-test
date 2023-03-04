@@ -2,9 +2,10 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-02-28 23:12:01
  * @FilePath: \vue3-system-test\src\views\UserListView.vue
- * @LastEditTime: 2023-03-03 09:20:52
+ * @LastEditTime: 2023-03-04 10:40:27
 -->
 <template>
+    <NavBar></NavBar>
     <FrameWork>
         <!-- 用()传触发事件的参数 -->
         <div class="card mg-bot-1" v-for="user in users" :key="user.id" @click="open_user_profile(user.id)">
@@ -30,16 +31,22 @@ import $ from 'jquery'
 // 采用Ajax进行数据交互
 import { ref } from 'vue';
 import router from '@/router';
-import { useStore } from 'vuex';
+// import { useStore } from 'vuex';
+import NavBar from '@/components/NavBar.vue';
 
 export default {
     name: 'UserListView',
     components: {
-        FrameWork
+        FrameWork,
+        NavBar
     },
     setup() {
-        const store = useStore();
+        // const store = useStore();
         let users = ref([]);
+        const user = JSON.parse(localStorage.getItem('user'));
+        let is_login = false;
+        if (user)
+            is_login = user.is_login;
 
         $.ajax({
             url: 'https://app165.acapp.acwing.com.cn/myspace/userlist/',
@@ -50,7 +57,7 @@ export default {
         })
 
         const open_user_profile = function (userId) {
-            if (store.state.user.is_login) {
+            if (is_login) {
                 router.push({
                     name: "userprofile",
                     params: {

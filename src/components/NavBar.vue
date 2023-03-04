@@ -2,7 +2,7 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-02-28 21:12:41
  * @FilePath: \vue3-system-test\src\components\NavBar.vue
- * @LastEditTime: 2023-03-03 13:28:55
+ * @LastEditTime: 2023-03-04 10:46:59
 -->
 <template>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -21,7 +21,7 @@
                         <RouterLink class="nav-link" :to="{ name: 'userlist' }">好友列表</RouterLink>
                     </li>
                 </ul>
-                <ul class="navbar-nav " v-if="!is_login">
+                <ul class="navbar-nav " v-if="!$store.state.user.is_login">
                     <li class="nav-item">
                         <RouterLink class="nav-link" :to="{ name: 'login' }">登录</RouterLink>
                     </li>
@@ -29,6 +29,7 @@
                         <RouterLink class="nav-link" :to="{ name: 'register' }">注册</RouterLink>
                     </li>
                 </ul>
+
                 <ul class="navbar-nav " v-else>
                     <li class="nav-item">
                         <RouterLink class="nav-link"
@@ -46,33 +47,22 @@
 </template>
 
 <script>
-import { getAccess } from '@/assets/js';
 import { useStore } from 'vuex';
-import { computed } from 'vue';
+// import router from '@/router/index';
 
 export default {
     name: "NavBar",
     // 退出的话，就需要修改用户的登录状态，就需要和store打交道
-
-    mounted() {
-        const is_login = computed(function () {
-            const access = getAccess();
-            if (access != '')
-                return true;
-            else return false;
-        })
-
-        return {
-            is_login
-        }
-    },
-
     setup() {
         const store = useStore();
-
-
+        // const user = JSON.parse(localStorage.getItem('user'));
+        // let is_login = false;
+        // if (user) {
+        //     is_login = Boolean(localStorage.getItem('is_login'));
+        // }
         const logout = () => {
             store.commit('logout');
+            // router.push({name: 'home'});
         };
         return {
             logout,

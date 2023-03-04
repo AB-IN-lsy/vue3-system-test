@@ -2,7 +2,7 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-03-02 20:42:42
  * @FilePath: \vue3-system-test\src\store\user.js
- * @LastEditTime: 2023-03-03 12:42:10
+ * @LastEditTime: 2023-03-04 10:28:12
  */
 import $ from 'jquery';
 import jwt_decode from 'jwt-decode';
@@ -32,6 +32,8 @@ const ModuleUser = {
             state.access = user.access;
             state.refresh = user.refresh;
             state.is_login = user.is_login;
+            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("is_login", user.is_login);
         },
         updateAccess(state, access) {
             state.access = access;

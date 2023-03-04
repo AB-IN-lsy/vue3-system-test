@@ -2,7 +2,7 @@
  * @Author: NEFU AB-IN
  * @Date: 2023-03-01 11:13:16
  * @FilePath: \vue3-system-test\src\components\UserProfileWriteSpace.vue
- * @LastEditTime: 2023-03-03 10:00:24
+ * @LastEditTime: 2023-03-04 10:57:14
 -->
 <template>
     <div class="card mg-top-1">
@@ -12,7 +12,7 @@
             </label>
             <!-- textarea和content的内容绑定起来 -->
             <textarea v-model="content" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            <button @click="submit" type="button" class="btn btn-primary mg-top-1"
+            <button @click="submitPost" type="button" class="btn btn-primary mg-top-1"
                 style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: 1.5rem; --bs-btn-font-size: 1rem;">
                 发帖
             </button>
@@ -32,7 +32,7 @@ export default {
         // ref定义一个变量，若获取变量需用.value
         let content = ref('');
         const store = useStore();
-        const submit = function () {
+        const submitPost = function () {
             if (!content.value) return;
             $.ajax({
                 url: "https://app165.acapp.acwing.com.cn/myspace/post/",
@@ -46,7 +46,7 @@ export default {
                 success(resp) {
                     // resp 先包含是否添加成功
                     if (resp.result === "success") {
-                        context.emit('submit', content.value);
+                        context.emit('submitPost', content.value);
                         content.value = "";
                     }
                 }
@@ -54,7 +54,7 @@ export default {
 
         }
         return {
-            content, submit
+            content, submitPost
         }
     }
 }
